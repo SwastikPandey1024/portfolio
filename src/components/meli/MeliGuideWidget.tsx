@@ -71,12 +71,14 @@ export const MeliGuideWidget: React.FC = () => {
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: prefersReducedMotion ? 0 : 10, scale: 0.95 }}
-              transition={{ duration: 0.25 }}
+              transition={{ duration: 0.35, delay: prefersReducedMotion ? 0 : 0.6 }}
               className="surface-card p-3.5 sm:p-5 border border-semantic-violet/60 bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-xl flex flex-col gap-3 max-w-[340px] sm:max-w-[380px]"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-2.5 sm:gap-3">
-                  <MeliSprite state="greeting" size="md" />
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-canvas/80 border border-semantic-violet/40 p-1 flex items-center justify-center shrink-0 shadow-sm">
+                    <MeliSprite state="greeting" size="md" className="w-full h-full" />
+                  </div>
                   <div>
                     <span className="font-mono text-[9px] sm:text-[10px] text-semantic-violet uppercase tracking-wider font-semibold block">
                       AI COMPANION
@@ -170,9 +172,11 @@ export const MeliGuideWidget: React.FC = () => {
                 </div>
               </div>
 
-              {/* Message Body with Explicitly Rendered Character Sprite */}
-              <div className="flex items-start gap-2.5 sm:gap-3">
-                <MeliSprite state={spriteState} size="sm" />
+              {/* Message Body with Explicit Character Avatar Container */}
+              <div className="flex items-start gap-3 pt-1">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-canvas/80 border border-border/80 p-1 flex items-center justify-center shrink-0 shadow-sm">
+                  <MeliSprite state={spriteState} size="md" className="w-full h-full" />
+                </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-body text-xs sm:text-sm text-content-primary leading-relaxed">
                     "{currentGuidance.message}"

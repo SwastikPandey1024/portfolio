@@ -33,17 +33,18 @@ export const MeliGuideProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       }
 
       if (!seen) {
-        // Show prompt on first visit after a natural slight delay
-        const timer = setTimeout(() => {
-          setIsFirstVisitPrompt(true);
-          setGuideState('GREETING');
-        }, 1200);
-        return () => clearTimeout(timer);
+        // Guaranteed first-visit prompt activation
+        setIsFirstVisitPrompt(true);
+        setGuideEnabled(false);
+        setGuideExpanded(false);
+        setGuideState('GREETING');
       } else if (enabled === 'true') {
+        setIsFirstVisitPrompt(false);
         setGuideEnabled(true);
         setGuideExpanded(true);
         setGuideState('PROJECT_CONTEXT');
       } else {
+        setIsFirstVisitPrompt(false);
         setGuideEnabled(false);
         setGuideExpanded(false);
         setGuideState('DISABLED');

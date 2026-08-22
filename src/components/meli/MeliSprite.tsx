@@ -23,45 +23,50 @@ export const MeliSprite: React.FC<MeliSpriteProps> = ({
   altText = `Meli AI Companion (${state} state)`,
 }) => {
   const asset = MELI_ASSETS[state] ?? MELI_ASSETS.idle;
-  const [imgSrc, setImgSrc] = useState<string>(asset.webp);
+  const [currentSrc, setCurrentSrc] = useState<string>(asset.webp);
 
-  // Sync image source whenever state prop changes
+  // Synchronize active source on state change
   useEffect(() => {
-    const currentAsset = MELI_ASSETS[state] ?? MELI_ASSETS.idle;
-    setImgSrc(currentAsset.webp);
+    const nextAsset = MELI_ASSETS[state] ?? MELI_ASSETS.idle;
+    setCurrentSrc(nextAsset.webp);
   }, [state]);
 
   const handleError = () => {
-    const currentAsset = MELI_ASSETS[state] ?? MELI_ASSETS.idle;
-    if (imgSrc === currentAsset.webp) {
-      // 1. Fallback from WebP to PNG of the same state
-      setImgSrc(currentAsset.png);
-    } else if (imgSrc === currentAsset.png) {
-      // 2. Fallback to idle WebP
-      setImgSrc(MELI_ASSETS.idle.webp);
-    } else if (imgSrc === MELI_ASSETS.idle.webp) {
-      // 3. Fallback to idle PNG
-      setImgSrc(MELI_ASSETS.idle.png);
+    const nextAsset = MELI_ASSETS[state] ?? MELI_ASSETS.idle;
+    if (currentSrc === nextAsset.webp) {
+      // 1. Fallback from WebP to PNG
+      setCurrentSrc(nextAsset.png);
+    } else if (currentSrc === nextAsset.png) {
+      // 2. Fallback to Idle WebP
+      setCurrentSrc(MELI_ASSETS.idle.webp);
+    } else if (currentSrc === MELI_ASSETS.idle.webp) {
+      // 3. Fallback to Idle PNG
+      setCurrentSrc(MELI_ASSETS.idle.png);
     }
   };
 
   return (
     <div
       className={cn(
-        'relative shrink-0 flex items-center justify-center select-none overflow-visible',
+        'relative shrink-0 flex items-center justify-center select-none',
         SIZE_MAP[size],
         className
       )}
     >
-      <img
-        src={imgSrc}
-        alt={altText}
-        width={128}
-        height={128}
-        decoding="async"
-        className="w-full h-full max-w-full max-h-full object-contain filter drop-shadow-md transition-opacity duration-200"
-        onError={handleError}
-      />
+      <picture className="w-full h-full flex items-center justify-center">
+        <source srcSet={asset.webp} type="image/webp" />
+        <source srcSet={asset.png} type="image/png" />
+        <img
+          src={currentSrc}
+          alt={altText}
+          width={128}
+          height={128}
+          loading="eager"
+          decoding="sync"
+          onError={handleError}
+          className="w-full h-full max-w-full max-h-full object-contain filter drop-shadow-md select-none pointer-events-none"
+        />
+      </picture>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { MeliGuideProvider } from '@/context/MeliGuideContext';
 import { useMeliGuide } from '@/hooks/useMeliGuide';
@@ -80,8 +80,58 @@ describe('Phase 6 & 7.1: Meli as Optional Portfolio Guide', () => {
     expect(img).toHaveAttribute('src', '/assets/projects/meli/idle.png');
   });
 
-  it('shows first-visit prompt after initial timer when sessionStorage is empty', async () => {
-    vi.useFakeTimers();
+  it('shows first-visit greeting prompt immediately on fresh session mount', () => {
+    render(
+      <MeliGuideProvider>
+        <TestGuideConsumer />
+        <MeliGuideWidget />
+      </MeliGuideProvider>
+    );
+
+    expect(screen.getByTestId('first-visit-prompt')).toHaveTextContent('true');
+    expect(screen.getByText("Hi. I'm Meli.")).toBeInTheDocument();
+    expect(screen.getByText('Want a quick tour?')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /GUIDE ME/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /EXPLORE FREELY/i })).toBeInTheDocument();
+  });
+
+  it('enables guidance and expands card when GUIDE ME is clicked', () => {
+    render(
+      <MeliGuideProvider>
+        <TestGuideConsumer />
+        <MeliGuideWidget />
+      </MeliGuideProvider>
+    );
+
+    const guideMeBtn = screen.getByRole('button', { name: /GUIDE ME/i });
+    fireEvent.click(guideMeBtn);
+
+    expect(screen.getByTestId('guide-enabled')).toHaveTextContent('true');
+    expect(screen.getByTestId('guide-expanded')).toHaveTextContent('true');
+    expect(sessionStorage.getItem('meliGuideEnabled')).toBe('true');
+    expect(sessionStorage.getItem('meliGuideSeen')).toBe('true');
+  });
+
+  it('dismisses guide and stays disabled when EXPLORE FREELY is clicked', () => {
+    render(
+      <MeliGuideProvider>
+        <TestGuideConsumer />
+        <MeliGuideWidget />
+      </MeliGuideProvider>
+    );
+
+    const exploreBtn = screen.getByRole('button', { name: /EXPLORE FREELY/i });
+    fireEvent.click(exploreBtn);
+
+    expect(screen.getByTestId('guide-enabled')).toHaveTextContent('false');
+    expect(screen.getByTestId('guide-expanded')).toHaveTextContent('false');
+    expect(sessionStorage.getItem('meliGuideEnabled')).toBe('false');
+    expect(sessionStorage.getItem('meliGuideSeen')).toBe('true');
+  });
+
+  it('seen state prevents repeat greeting on subsequent mount', () => {
+    sessionStorage.setItem('meliGuideSeen', 'true');
+    sessionStorage.setItem('meliGuideEnabled', 'false');
 
     render(
       <MeliGuideProvider>
@@ -91,66 +141,7 @@ describe('Phase 6 & 7.1: Meli as Optional Portfolio Guide', () => {
     );
 
     expect(screen.getByTestId('first-visit-prompt')).toHaveTextContent('false');
-
-    // Advance timer past 1200ms
-    act(() => {
-      vi.advanceTimersByTime(1300);
-    });
-
-    expect(screen.getByTestId('first-visit-prompt')).toHaveTextContent('true');
-    expect(screen.getByText("Hi. I'm Meli.")).toBeInTheDocument();
-    expect(screen.getByText('Want a quick tour?')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /GUIDE ME/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /EXPLORE FREELY/i })).toBeInTheDocument();
-  });
-
-  it('enables guidance and expands card when GUIDE ME is clicked', async () => {
-    vi.useFakeTimers();
-
-    render(
-      <MeliGuideProvider>
-        <TestGuideConsumer />
-        <MeliGuideWidget />
-      </MeliGuideProvider>
-    );
-
-    act(() => {
-      vi.advanceTimersByTime(1300);
-    });
-
-    const guideMeBtn = screen.getByRole('button', { name: /GUIDE ME/i });
-    act(() => {
-      fireEvent.click(guideMeBtn);
-    });
-
-    expect(screen.getByTestId('guide-enabled')).toHaveTextContent('true');
-    expect(screen.getByTestId('guide-expanded')).toHaveTextContent('true');
-    expect(sessionStorage.getItem('meliGuideEnabled')).toBe('true');
-    expect(sessionStorage.getItem('meliGuideSeen')).toBe('true');
-  });
-
-  it('dismisses guide and stays disabled when EXPLORE FREELY is clicked', async () => {
-    vi.useFakeTimers();
-
-    render(
-      <MeliGuideProvider>
-        <TestGuideConsumer />
-        <MeliGuideWidget />
-      </MeliGuideProvider>
-    );
-
-    act(() => {
-      vi.advanceTimersByTime(1300);
-    });
-
-    const exploreBtn = screen.getByRole('button', { name: /EXPLORE FREELY/i });
-    act(() => {
-      fireEvent.click(exploreBtn);
-    });
-
-    expect(screen.getByTestId('guide-enabled')).toHaveTextContent('false');
-    expect(screen.getByTestId('guide-expanded')).toHaveTextContent('false');
-    expect(sessionStorage.getItem('meliGuideEnabled')).toBe('false');
+    expect(screen.queryByText("Hi. I'm Meli.")).not.toBeInTheDocument();
   });
 
   it('expands contextual card and renders sprite when minimized pill is clicked', () => {
@@ -189,7 +180,7 @@ describe('Phase 6 & 7.1: Meli as Optional Portfolio Guide', () => {
     expect(sprites.length).toBeGreaterThanOrEqual(1);
   });
 
-  it('updates contextual message and character sprite across section transitions', async () => {
+  it('updates contextual message and character sprite across section transitions', () => {
     render(
       <MeliGuideProvider>
         <TestGuideConsumer />
@@ -252,8 +243,6 @@ describe('Phase 6 & 7.1: Meli as Optional Portfolio Guide', () => {
   });
 
   it('dismisses guide prompt on Escape key press', () => {
-    vi.useFakeTimers();
-
     render(
       <MeliGuideProvider>
         <TestGuideConsumer />
@@ -261,15 +250,9 @@ describe('Phase 6 & 7.1: Meli as Optional Portfolio Guide', () => {
       </MeliGuideProvider>
     );
 
-    act(() => {
-      vi.advanceTimersByTime(1300);
-    });
-
     expect(screen.getByTestId('first-visit-prompt')).toHaveTextContent('true');
 
-    act(() => {
-      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
-    });
+    fireEvent.keyDown(window, { key: 'Escape' });
 
     expect(screen.getByTestId('first-visit-prompt')).toHaveTextContent('false');
   });
