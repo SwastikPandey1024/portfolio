@@ -4,7 +4,7 @@ import { useMeliGuide } from '@/hooks/useMeliGuide';
 import { MeliSprite } from '@/components/meli/MeliSprite';
 import { MELI_FIRST_VISIT } from '@/data/meliGuide';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { X, Volume2, VolumeX, Sparkles, ArrowRight } from 'lucide-react';
+import { X, Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
@@ -12,14 +12,12 @@ export const MeliGuideWidget: React.FC = () => {
   const {
     guideEnabled,
     guideExpanded,
-    guideMuted,
     isFirstVisitPrompt,
     currentGuidance,
     spriteState,
     enableGuide,
     openGuide,
     closeGuide,
-    toggleMute,
     dismissPrompt,
   } = useMeliGuide();
 
@@ -57,11 +55,11 @@ export const MeliGuideWidget: React.FC = () => {
   return (
     <aside
       aria-label="Meli Portfolio Guide"
-      className="fixed bottom-3 right-3 sm:bottom-6 sm:right-6 z-40 max-w-[calc(100vw-1.5rem)] sm:max-w-md pointer-events-none"
+      className="fixed bottom-3 right-3 sm:bottom-6 sm:right-6 z-40 max-w-[calc(100vw-1.5rem)] sm:max-w-xl pointer-events-none"
     >
       <div className="pointer-events-auto">
         <AnimatePresence>
-          {/* 1. First-Visit Prompt Dialog */}
+          {/* 1. First-Visit Prompt Dialog with 3D-style Character Outside Box */}
           {isFirstVisitPrompt && (
             <motion.div
               key="meli-first-visit-prompt"
@@ -72,17 +70,24 @@ export const MeliGuideWidget: React.FC = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: prefersReducedMotion ? 0 : 10, scale: 0.95 }}
               transition={{ duration: 0.35, delay: prefersReducedMotion ? 0 : 0.6 }}
-              className="surface-card p-3.5 sm:p-5 border border-semantic-violet/60 bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-2xl flex flex-col gap-3 max-w-[340px] sm:max-w-[390px]"
+              className="flex items-end gap-2 sm:gap-3 filter drop-shadow-2xl max-w-[340px] sm:max-w-[420px]"
             >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <motion.div
-                    animate={prefersReducedMotion ? {} : { y: [0, -3, 0] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                    className="shrink-0"
-                  >
-                    <MeliSprite state="greeting" size="avatar" className="w-16 h-24 sm:w-18 sm:h-26" />
-                  </motion.div>
+              {/* Floating Companion Avatar Outside the Box */}
+              <motion.div
+                animate={prefersReducedMotion ? {} : { y: [0, -4, 0] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+                className="shrink-0 relative select-none flex flex-col items-center pb-1"
+              >
+                <MeliSprite state="greeting" size="avatar" className="w-16 sm:w-20 h-28 sm:h-36" />
+                <div className="w-10 h-1.5 rounded-full bg-black/50 blur-[2px] -mt-1" />
+              </motion.div>
+
+              {/* Prompt Speech Bubble */}
+              <div className="surface-card p-3.5 sm:p-5 border border-semantic-violet/60 bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-2xl flex flex-col gap-3 flex-1 relative mb-2">
+                {/* Speech Bubble Tail pointing to Meli */}
+                <div className="absolute -left-1.5 bottom-6 w-3 h-3 bg-surface/95 border-l border-b border-semantic-violet/60 transform rotate-45 pointer-events-none" />
+
+                <div className="flex items-start justify-between gap-2">
                   <div>
                     <span className="font-mono text-[9px] sm:text-[10px] text-semantic-violet uppercase tracking-wider font-semibold block">
                       AI COMPANION
@@ -94,42 +99,42 @@ export const MeliGuideWidget: React.FC = () => {
                       {MELI_FIRST_VISIT.prompt}
                     </p>
                   </div>
+
+                  <button
+                    type="button"
+                    onClick={dismissPrompt}
+                    aria-label="Close guide prompt"
+                    className="p-1 text-content-subtle hover:text-content-primary rounded transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={dismissPrompt}
-                  aria-label="Close guide prompt"
-                  className="p-1 text-content-subtle hover:text-content-primary rounded transition-colors"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex items-center gap-2 pt-1 border-t border-border/60">
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={enableGuide}
-                  className="bg-violet-600 hover:bg-violet-500 text-white font-semibold text-xs flex-1"
-                >
-                  <Sparkles className="w-3.5 h-3.5 mr-1" />
-                  {MELI_FIRST_VISIT.guideAction}
-                </Button>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={dismissPrompt}
-                  className="text-xs"
-                >
-                  {MELI_FIRST_VISIT.exploreAction}
-                </Button>
+                {/* Action Buttons */}
+                <div className="flex items-center gap-2 pt-1 border-t border-border/60">
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={enableGuide}
+                    className="bg-violet-600 hover:bg-violet-500 text-white font-semibold text-xs flex-1"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 mr-1" />
+                    {MELI_FIRST_VISIT.guideAction}
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={dismissPrompt}
+                    className="text-xs"
+                  >
+                    {MELI_FIRST_VISIT.exploreAction}
+                  </Button>
+                </div>
               </div>
             </motion.div>
           )}
 
-          {/* 2. Expanded Active Contextual Guide Card with Prominent Character Avatar */}
+          {/* 2. Expanded Active Contextual Guide with 3D-Style Companion Outside Speech Bubble */}
           {guideEnabled && guideExpanded && !isFirstVisitPrompt && currentGuidance && (
             <motion.div
               key={`meli-guide-${currentGuidance.sectionId}`}
@@ -140,31 +145,48 @@ export const MeliGuideWidget: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
               transition={{ duration: 0.2 }}
-              className={cn(
-                'surface-card p-3 sm:p-4 border bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-2xl flex flex-col gap-2 max-w-[340px] sm:max-w-[400px]',
-                currentAccent.border
-              )}
+              className="flex items-end gap-2 sm:gap-3 filter drop-shadow-2xl max-w-[340px] sm:max-w-[430px]"
             >
-              {/* Header Bar */}
-              <div className="flex items-center justify-between text-xs pb-1.5 border-b border-border/50">
-                <div className="flex items-center gap-2">
-                  <span className={cn('font-mono text-[9px] sm:text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border font-semibold', currentAccent.badge)}>
-                    MELI GUIDE
-                  </span>
-                  <span className="font-mono text-[9px] sm:text-[10px] text-content-subtle">
-                    {currentGuidance.sectionId.toUpperCase()}
-                  </span>
-                </div>
+              {/* Floating Meli Character Standing Outside the Box */}
+              <motion.div
+                animate={prefersReducedMotion ? {} : { y: [0, -4, 0] }}
+                transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+                className="shrink-0 relative select-none flex flex-col items-center pb-1"
+              >
+                <MeliSprite
+                  state={spriteState}
+                  size="avatar"
+                  className="w-16 sm:w-20 h-28 sm:h-36"
+                />
+                <div className="w-10 h-1.5 rounded-full bg-black/50 blur-[2px] -mt-1" />
+              </motion.div>
 
-                <div className="flex items-center gap-1">
-                  <button
-                    type="button"
-                    onClick={toggleMute}
-                    aria-label={guideMuted ? 'Unmute Meli Guide' : 'Mute Meli Guide'}
-                    className="p-1 text-content-subtle hover:text-content-primary rounded transition-colors"
-                  >
-                    {guideMuted ? <VolumeX className="w-3.5 h-3.5 text-content-muted" /> : <Volume2 className="w-3.5 h-3.5" />}
-                  </button>
+              {/* Speech Bubble Box */}
+              <div
+                className={cn(
+                  'surface-card p-3 sm:p-4 border bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-2xl flex flex-col gap-2 flex-1 relative mb-2',
+                  currentAccent.border
+                )}
+              >
+                {/* Speech Bubble Tail pointing towards Meli */}
+                <div
+                  className={cn(
+                    'absolute -left-1.5 bottom-6 w-3 h-3 bg-surface/95 border-l border-b transform rotate-45 pointer-events-none',
+                    currentAccent.border
+                  )}
+                />
+
+                {/* Header Bar with Section Tag and Close Button (Speaker removed) */}
+                <div className="flex items-center justify-between text-xs pb-1.5 border-b border-border/50">
+                  <div className="flex items-center gap-2">
+                    <span className={cn('font-mono text-[9px] sm:text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border font-semibold', currentAccent.badge)}>
+                      MELI GUIDE
+                    </span>
+                    <span className="font-mono text-[9px] sm:text-[10px] text-content-subtle">
+                      {currentGuidance.sectionId.toUpperCase()}
+                    </span>
+                  </div>
+
                   <button
                     type="button"
                     onClick={closeGuide}
@@ -174,23 +196,9 @@ export const MeliGuideWidget: React.FC = () => {
                     <X className="w-3.5 h-3.5" />
                   </button>
                 </div>
-              </div>
 
-              {/* Character Avatar & Dialogue Layout */}
-              <div className="flex items-center gap-3 pt-1">
-                <motion.div
-                  animate={prefersReducedMotion ? {} : { y: [0, -3, 0] }}
-                  transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
-                  className="shrink-0 flex items-center justify-center"
-                >
-                  <MeliSprite
-                    state={spriteState}
-                    size="avatar"
-                    className="w-16 sm:w-20 h-24 sm:h-28"
-                  />
-                </motion.div>
-
-                <div className="flex-1 min-w-0">
+                {/* Dialogue Body */}
+                <div>
                   <p className="font-body text-xs sm:text-sm text-content-primary leading-relaxed">
                     "{currentGuidance.message}"
                   </p>
