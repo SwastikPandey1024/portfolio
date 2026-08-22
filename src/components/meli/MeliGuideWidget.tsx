@@ -27,26 +27,26 @@ export const MeliGuideWidget: React.FC = () => {
     cyan: {
       border: 'border-semantic-cyan/60',
       glow: 'shadow-glow-cyan',
-      badge: 'bg-semantic-cyan/15 text-semantic-cyan border-semantic-cyan/30',
-      button: 'bg-cyan-600 hover:bg-cyan-500 text-white',
+      badge: 'bg-semantic-cyan/15 text-semantic-cyan border-semantic-cyan/40',
+      button: 'bg-cyan-600 hover:bg-cyan-500 text-white shadow-glow-cyan',
     },
     indigo: {
       border: 'border-semantic-indigo/60',
       glow: 'shadow-glow-indigo',
-      badge: 'bg-semantic-indigo/15 text-semantic-indigo border-semantic-indigo/30',
-      button: 'bg-indigo-600 hover:bg-indigo-500 text-white',
+      badge: 'bg-semantic-indigo/15 text-semantic-indigo border-semantic-indigo/40',
+      button: 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-glow-indigo',
     },
     emerald: {
       border: 'border-semantic-emerald/60',
       glow: 'shadow-glow-emerald',
-      badge: 'bg-semantic-emerald/15 text-semantic-emerald border-semantic-emerald/30',
-      button: 'bg-emerald-600 hover:bg-emerald-500 text-white',
+      badge: 'bg-semantic-emerald/15 text-semantic-emerald border-semantic-emerald/40',
+      button: 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-glow-emerald',
     },
     violet: {
       border: 'border-semantic-violet/60',
       glow: 'shadow-glow-violet',
-      badge: 'bg-semantic-violet/15 text-semantic-violet border-semantic-violet/30',
-      button: 'bg-violet-600 hover:bg-violet-500 text-white',
+      badge: 'bg-semantic-violet/15 text-semantic-violet border-semantic-violet/40',
+      button: 'bg-violet-600 hover:bg-violet-500 text-white shadow-glow-violet',
     },
   };
 
@@ -55,7 +55,7 @@ export const MeliGuideWidget: React.FC = () => {
   return (
     <aside
       aria-label="Meli Portfolio Guide"
-      className="fixed bottom-3 right-3 sm:bottom-6 sm:right-6 z-40 max-w-[calc(100vw-1.5rem)] sm:max-w-xl pointer-events-none"
+      className="fixed bottom-4 right-4 sm:bottom-7 sm:right-7 z-40 max-w-[calc(100vw-1.5rem)] sm:max-w-xl pointer-events-none"
     >
       <div className="pointer-events-auto">
         <AnimatePresence>
@@ -69,22 +69,23 @@ export const MeliGuideWidget: React.FC = () => {
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 16, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: prefersReducedMotion ? 0 : 12, scale: 0.96 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: prefersReducedMotion ? 0 : 0.4 }}
-              className="flex items-end gap-2.5 sm:gap-3 filter drop-shadow-2xl max-w-[340px] sm:max-w-[440px]"
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: prefersReducedMotion ? 0 : 0.3 }}
+              className="flex items-end gap-2.5 sm:gap-3.5 filter drop-shadow-2xl max-w-[340px] sm:max-w-[440px]"
             >
-              {/* Floating Companion Avatar */}
+              {/* Floating Companion Avatar Outside the Box */}
               <div className="shrink-0 relative select-none flex flex-col items-center pb-1">
                 <motion.div
+                  initial={prefersReducedMotion ? {} : { y: 10, rotate: -1 }}
                   animate={
                     prefersReducedMotion
                       ? {}
                       : {
                           y: [0, -5, 0],
-                          rotate: [0, -1, 1, 0],
+                          rotate: [0, -0.8, 0.8, 0],
                         }
                   }
                   transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
-                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileHover={{ scale: 1.04, y: -3 }}
                   whileTap={{ scale: 0.98 }}
                   className="cursor-pointer"
                 >
@@ -96,7 +97,7 @@ export const MeliGuideWidget: React.FC = () => {
                     prefersReducedMotion
                       ? {}
                       : {
-                          scaleX: [1, 0.86, 1],
+                          scaleX: [1, 0.88, 1],
                           opacity: [0.55, 0.35, 0.55],
                         }
                   }
@@ -106,19 +107,19 @@ export const MeliGuideWidget: React.FC = () => {
               </div>
 
               {/* Prompt Speech Bubble */}
-              <div className="surface-card p-3.5 sm:p-5 border border-semantic-violet/60 bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-2xl flex flex-col gap-3 flex-1 relative mb-3">
-                {/* Speech Bubble Tail pointing towards Meli */}
-                <div className="absolute -left-1.5 bottom-7 w-3 h-3 bg-surface/95 border-l border-b border-semantic-violet/60 transform rotate-45 pointer-events-none" />
+              <div className="surface-card p-4 sm:p-5 border border-semantic-violet/60 bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-2xl flex flex-col gap-3 flex-1 relative mb-3">
+                {/* Speech Bubble Tail pointing towards Meli's Upper Body */}
+                <div className="absolute -left-1.5 bottom-9 sm:bottom-11 w-3 h-3 bg-surface/95 border-l border-b border-semantic-violet/60 transform rotate-45 pointer-events-none" />
 
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <span className="font-mono text-[9px] sm:text-[10px] text-semantic-violet uppercase tracking-wider font-semibold block">
-                      AI COMPANION
+                    <span className="font-mono text-[9px] sm:text-[10px] text-semantic-violet uppercase tracking-wider font-semibold block mb-0.5">
+                      AI COMPANION // CONTEXTUAL GUIDE
                     </span>
                     <h4 id="meli-prompt-title" className="font-display text-sm sm:text-base font-bold text-content-primary">
                       {MELI_FIRST_VISIT.title}
                     </h4>
-                    <p className="font-body text-[11px] sm:text-xs text-content-muted mt-0.5 leading-relaxed">
+                    <p className="font-body text-[11px] sm:text-xs text-content-muted mt-1 leading-relaxed">
                       {MELI_FIRST_VISIT.prompt}
                     </p>
                   </div>
@@ -168,21 +169,22 @@ export const MeliGuideWidget: React.FC = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: prefersReducedMotion ? 0 : 12, scale: 0.96 }}
               transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="flex items-end gap-2.5 sm:gap-3 filter drop-shadow-2xl max-w-[340px] sm:max-w-[450px]"
+              className="flex items-end gap-2.5 sm:gap-3.5 filter drop-shadow-2xl max-w-[340px] sm:max-w-[450px]"
             >
               {/* Floating Meli Character Avatar Standing Outside the Box */}
               <div className="shrink-0 relative select-none flex flex-col items-center pb-1">
                 <motion.div
+                  initial={prefersReducedMotion ? {} : { y: 8, rotate: -1 }}
                   animate={
                     prefersReducedMotion
                       ? {}
                       : {
                           y: [0, -5, 0],
-                          rotate: [0, -1, 1, 0],
+                          rotate: [0, -0.8, 0.8, 0],
                         }
                   }
-                  transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-                  whileHover={{ scale: 1.05, y: -4 }}
+                  transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
+                  whileHover={{ scale: 1.04, y: -3 }}
                   whileTap={{ scale: 0.98 }}
                   className="cursor-pointer"
                 >
@@ -194,11 +196,11 @@ export const MeliGuideWidget: React.FC = () => {
                     prefersReducedMotion
                       ? {}
                       : {
-                          scaleX: [1, 0.86, 1],
+                          scaleX: [1, 0.88, 1],
                           opacity: [0.55, 0.35, 0.55],
                         }
                   }
-                  transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+                  transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
                   className="w-14 sm:w-16 h-2 rounded-full bg-black/50 blur-[3px] -mt-1"
                 />
               </div>
@@ -206,26 +208,26 @@ export const MeliGuideWidget: React.FC = () => {
               {/* Speech Bubble Box */}
               <div
                 className={cn(
-                  'surface-card p-3.5 sm:p-4 border bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-2xl flex flex-col gap-2 flex-1 relative mb-3',
+                  'surface-card p-3.5 sm:p-4 border bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-2xl flex flex-col gap-2.5 flex-1 relative mb-3',
                   currentAccent.border
                 )}
               >
-                {/* Speech Bubble Tail pointing towards Meli */}
+                {/* Speech Bubble Tail pointing towards Meli's Upper Body */}
                 <div
                   className={cn(
-                    'absolute -left-1.5 bottom-7 w-3 h-3 bg-surface/95 border-l border-b transform rotate-45 pointer-events-none',
+                    'absolute -left-1.5 bottom-9 sm:bottom-11 w-3 h-3 bg-surface/95 border-l border-b transform rotate-45 pointer-events-none',
                     currentAccent.border
                   )}
                 />
 
-                {/* Header Bar with Section Tag and Close Button */}
+                {/* Header Bar with Elevated Meli Guide Label & Close Button */}
                 <div className="flex items-center justify-between text-xs pb-1.5 border-b border-border/50">
                   <div className="flex items-center gap-2">
-                    <span className={cn('font-mono text-[9px] sm:text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border font-semibold', currentAccent.badge)}>
+                    <span className={cn('font-mono text-[9px] sm:text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded border font-bold shadow-sm', currentAccent.badge)}>
                       MELI GUIDE
                     </span>
-                    <span className="font-mono text-[9px] sm:text-[10px] text-content-subtle">
-                      {currentGuidance.sectionId.toUpperCase()}
+                    <span className="font-mono text-[9px] sm:text-[10px] text-content-subtle tracking-wide font-medium">
+                      // {currentGuidance.sectionId.toUpperCase()}
                     </span>
                   </div>
 
@@ -273,7 +275,7 @@ export const MeliGuideWidget: React.FC = () => {
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.15 }}
               className={cn(
-                'flex items-center gap-2 px-3 py-1.5 rounded-full border shadow-surface-subtle transition-all cursor-pointer font-mono text-xs',
+                'flex items-center gap-2 px-3.5 py-1.5 rounded-full border shadow-surface-subtle transition-all cursor-pointer font-mono text-xs',
                 guideEnabled
                   ? 'bg-surface-raised/95 border-semantic-cyan/50 text-content-primary hover:border-semantic-cyan'
                   : 'bg-surface/90 border-border/80 text-content-muted hover:text-content-primary hover:border-content-muted'
