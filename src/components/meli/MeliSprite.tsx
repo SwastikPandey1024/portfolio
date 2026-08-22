@@ -14,8 +14,8 @@ const SIZE_MAP = {
   sm: 'w-10 h-10',
   md: 'w-14 h-14',
   lg: 'w-20 h-20',
-  avatar: 'w-20 sm:w-24 lg:w-28 h-36 sm:h-40 lg:h-44',
-  hero: 'w-28 sm:w-32 lg:w-36 h-44 sm:h-52 lg:h-56',
+  avatar: 'w-28 sm:w-36 lg:w-40 h-44 sm:h-52 lg:h-60',
+  hero: 'w-36 sm:w-44 lg:w-48 h-56 sm:h-64 lg:h-72',
 };
 
 export const MeliSprite: React.FC<MeliSpriteProps> = ({
@@ -61,12 +61,12 @@ export const MeliSprite: React.FC<MeliSpriteProps> = ({
         <img
           src={currentSrc}
           alt={altText}
-          width={240}
-          height={360}
+          width={320}
+          height={480}
           loading="eager"
           decoding="sync"
           onError={handleError}
-          className="w-full h-full max-w-full max-h-full object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)] select-none pointer-events-none transition-transform duration-300"
+          className="w-full h-full max-w-full max-h-full object-contain filter drop-shadow-[0_14px_28px_rgba(0,0,0,0.6)] select-none pointer-events-none transition-transform duration-300"
         />
       </picture>
     </div>

@@ -55,37 +55,37 @@ export const MeliGuideWidget: React.FC = () => {
   return (
     <aside
       aria-label="Meli Portfolio Guide"
-      className="fixed bottom-4 right-4 sm:bottom-7 sm:right-7 z-40 max-w-[calc(100vw-1.5rem)] sm:max-w-xl pointer-events-none"
+      className="fixed bottom-4 right-4 sm:bottom-7 sm:right-7 z-40 max-w-[calc(100vw-1.5rem)] sm:max-w-md pointer-events-none"
     >
       <div className="pointer-events-auto">
         <AnimatePresence>
-          {/* 1. First-Visit Prompt Dialog with 3D-Style Companion Outside Speech Bubble */}
+          {/* 1. First-Visit Prompt Dialog with Large Companion Over Dialogue Box */}
           {isFirstVisitPrompt && (
             <motion.div
               key="meli-first-visit-prompt"
               role="dialog"
               aria-modal="false"
               aria-labelledby="meli-prompt-title"
-              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 16, scale: 0.96 }}
+              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: prefersReducedMotion ? 0 : 12, scale: 0.96 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: prefersReducedMotion ? 0 : 0.3 }}
-              className="flex items-end gap-2.5 sm:gap-3.5 filter drop-shadow-2xl max-w-[340px] sm:max-w-[440px]"
+              exit={{ opacity: 0, y: prefersReducedMotion ? 0 : 15, scale: 0.95 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1], delay: prefersReducedMotion ? 0 : 0.2 }}
+              className="flex flex-col items-end filter drop-shadow-2xl max-w-[320px] sm:max-w-[370px]"
             >
-              {/* Floating Companion Avatar Outside the Box */}
-              <div className="shrink-0 relative select-none flex flex-col items-center pb-1">
+              {/* Floating Companion Avatar Over Box */}
+              <div className="relative select-none flex flex-col items-center self-center sm:self-end sm:mr-8 -mb-2 z-10">
                 <motion.div
-                  initial={prefersReducedMotion ? {} : { y: 10, rotate: -1 }}
+                  initial={prefersReducedMotion ? {} : { y: 12, scale: 0.95 }}
                   animate={
                     prefersReducedMotion
                       ? {}
                       : {
-                          y: [0, -5, 0],
+                          y: [0, -6, 0],
                           rotate: [0, -0.8, 0.8, 0],
                         }
                   }
                   transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
-                  whileHover={{ scale: 1.04, y: -3 }}
+                  whileHover={{ scale: 1.05, y: -4 }}
                   whileTap={{ scale: 0.98 }}
                   className="cursor-pointer"
                 >
@@ -97,19 +97,19 @@ export const MeliGuideWidget: React.FC = () => {
                     prefersReducedMotion
                       ? {}
                       : {
-                          scaleX: [1, 0.88, 1],
-                          opacity: [0.55, 0.35, 0.55],
+                          scaleX: [1, 0.86, 1],
+                          opacity: [0.6, 0.35, 0.6],
                         }
                   }
                   transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
-                  className="w-14 sm:w-16 h-2 rounded-full bg-black/50 blur-[3px] -mt-1"
+                  className="w-20 sm:w-24 h-2.5 rounded-full bg-black/60 blur-[3px] -mt-1.5"
                 />
               </div>
 
               {/* Prompt Speech Bubble */}
-              <div className="surface-card p-4 sm:p-5 border border-semantic-violet/60 bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-2xl flex flex-col gap-3 flex-1 relative mb-3">
-                {/* Speech Bubble Tail pointing towards Meli's Upper Body */}
-                <div className="absolute -left-1.5 bottom-9 sm:bottom-11 w-3 h-3 bg-surface/95 border-l border-b border-semantic-violet/60 transform rotate-45 pointer-events-none" />
+              <div className="surface-card p-4 sm:p-5 border border-semantic-violet/60 bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-2xl flex flex-col gap-3 w-full relative z-0">
+                {/* Speech Bubble Tail pointing UPWARDS to Meli */}
+                <div className="absolute -top-1.5 right-12 sm:right-16 w-3.5 h-3.5 bg-surface/95 border-l border-t border-semantic-violet/60 transform rotate-45 pointer-events-none" />
 
                 <div className="flex items-start justify-between gap-2">
                   <div>
@@ -158,64 +158,64 @@ export const MeliGuideWidget: React.FC = () => {
             </motion.div>
           )}
 
-          {/* 2. Expanded Active Contextual Guide with 3D-Style Companion Outside Speech Bubble */}
+          {/* 2. Expanded Active Contextual Guide with Large Character Over Dialogue Box */}
           {guideEnabled && guideExpanded && !isFirstVisitPrompt && currentGuidance && (
             <motion.div
               key={`meli-guide-${currentGuidance.sectionId}`}
               id="meli-guide-panel"
               role="region"
               aria-label="Contextual Guide Note"
-              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 16, scale: 0.96 }}
+              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: prefersReducedMotion ? 0 : 12, scale: 0.96 }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="flex items-end gap-2.5 sm:gap-3.5 filter drop-shadow-2xl max-w-[340px] sm:max-w-[450px]"
+              exit={{ opacity: 0, y: prefersReducedMotion ? 0 : 15, scale: 0.95 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col items-end filter drop-shadow-2xl max-w-[320px] sm:max-w-[380px]"
             >
-              {/* Floating Meli Character Avatar Standing Outside the Box */}
-              <div className="shrink-0 relative select-none flex flex-col items-center pb-1">
+              {/* Floating Meli Character Avatar Standing Over the Dialogue Box */}
+              <div className="relative select-none flex flex-col items-center self-center sm:self-end sm:mr-8 -mb-2 z-10">
                 <motion.div
-                  initial={prefersReducedMotion ? {} : { y: 8, rotate: -1 }}
+                  initial={prefersReducedMotion ? {} : { y: 10, scale: 0.95 }}
                   animate={
                     prefersReducedMotion
                       ? {}
                       : {
-                          y: [0, -5, 0],
+                          y: [0, -6, 0],
                           rotate: [0, -0.8, 0.8, 0],
                         }
                   }
                   transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
-                  whileHover={{ scale: 1.04, y: -3 }}
+                  whileHover={{ scale: 1.05, y: -4 }}
                   whileTap={{ scale: 0.98 }}
                   className="cursor-pointer"
                 >
                   <MeliSprite state={spriteState} size="avatar" />
                 </motion.div>
-                {/* Synchronized ground shadow */}
+                {/* Synchronized ground shadow right above the box edge */}
                 <motion.div
                   animate={
                     prefersReducedMotion
                       ? {}
                       : {
-                          scaleX: [1, 0.88, 1],
-                          opacity: [0.55, 0.35, 0.55],
+                          scaleX: [1, 0.86, 1],
+                          opacity: [0.6, 0.35, 0.6],
                         }
                   }
                   transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
-                  className="w-14 sm:w-16 h-2 rounded-full bg-black/50 blur-[3px] -mt-1"
+                  className="w-20 sm:w-24 h-2.5 rounded-full bg-black/60 blur-[3px] -mt-1.5"
                 />
               </div>
 
               {/* Speech Bubble Box */}
               <div
                 className={cn(
-                  'surface-card p-3.5 sm:p-4 border bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-2xl flex flex-col gap-2.5 flex-1 relative mb-3',
+                  'surface-card p-4 sm:p-5 border bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-2xl flex flex-col gap-2.5 w-full relative z-0',
                   currentAccent.border
                 )}
               >
-                {/* Speech Bubble Tail pointing towards Meli's Upper Body */}
+                {/* Speech Bubble Tail pointing UPWARDS toward Meli */}
                 <div
                   className={cn(
-                    'absolute -left-1.5 bottom-9 sm:bottom-11 w-3 h-3 bg-surface/95 border-l border-b transform rotate-45 pointer-events-none',
+                    'absolute -top-1.5 right-12 sm:right-16 w-3.5 h-3.5 bg-surface/95 border-l border-t transform rotate-45 pointer-events-none',
                     currentAccent.border
                   )}
                 />
