@@ -72,13 +72,17 @@ export const MeliGuideWidget: React.FC = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: prefersReducedMotion ? 0 : 10, scale: 0.95 }}
               transition={{ duration: 0.35, delay: prefersReducedMotion ? 0 : 0.6 }}
-              className="surface-card p-3.5 sm:p-5 border border-semantic-violet/60 bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-xl flex flex-col gap-3 max-w-[340px] sm:max-w-[380px]"
+              className="surface-card p-3.5 sm:p-5 border border-semantic-violet/60 bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-2xl flex flex-col gap-3 max-w-[340px] sm:max-w-[390px]"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-canvas/80 border border-semantic-violet/40 p-1 flex items-center justify-center shrink-0 shadow-sm">
-                    <MeliSprite state="greeting" size="md" className="w-full h-full" />
-                  </div>
+                  <motion.div
+                    animate={prefersReducedMotion ? {} : { y: [0, -3, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                    className="shrink-0"
+                  >
+                    <MeliSprite state="greeting" size="avatar" className="w-16 h-24 sm:w-18 sm:h-26" />
+                  </motion.div>
                   <div>
                     <span className="font-mono text-[9px] sm:text-[10px] text-semantic-violet uppercase tracking-wider font-semibold block">
                       AI COMPANION
@@ -86,7 +90,7 @@ export const MeliGuideWidget: React.FC = () => {
                     <h4 id="meli-prompt-title" className="font-display text-sm sm:text-base font-bold text-content-primary">
                       {MELI_FIRST_VISIT.title}
                     </h4>
-                    <p className="font-body text-[11px] sm:text-xs text-content-muted mt-0.5">
+                    <p className="font-body text-[11px] sm:text-xs text-content-muted mt-0.5 leading-relaxed">
                       {MELI_FIRST_VISIT.prompt}
                     </p>
                   </div>
@@ -125,8 +129,8 @@ export const MeliGuideWidget: React.FC = () => {
             </motion.div>
           )}
 
-          {/* 2. Expanded Active Contextual Guide Card */}
-          {guideEnabled && guideExpanded && !isFirstVisitPrompt && currentGuidance && !guideMuted && (
+          {/* 2. Expanded Active Contextual Guide Card with Prominent Character Avatar */}
+          {guideEnabled && guideExpanded && !isFirstVisitPrompt && currentGuidance && (
             <motion.div
               key={`meli-guide-${currentGuidance.sectionId}`}
               id="meli-guide-panel"
@@ -137,7 +141,7 @@ export const MeliGuideWidget: React.FC = () => {
               exit={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
               transition={{ duration: 0.2 }}
               className={cn(
-                'surface-card p-3 sm:p-4 border bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-xl flex flex-col gap-2 max-w-[320px] sm:max-w-[380px]',
+                'surface-card p-3 sm:p-4 border bg-surface/95 backdrop-blur-md shadow-surface-elevated rounded-2xl flex flex-col gap-2 max-w-[340px] sm:max-w-[400px]',
                 currentAccent.border
               )}
             >
@@ -159,7 +163,7 @@ export const MeliGuideWidget: React.FC = () => {
                     aria-label={guideMuted ? 'Unmute Meli Guide' : 'Mute Meli Guide'}
                     className="p-1 text-content-subtle hover:text-content-primary rounded transition-colors"
                   >
-                    {guideMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                    {guideMuted ? <VolumeX className="w-3.5 h-3.5 text-content-muted" /> : <Volume2 className="w-3.5 h-3.5" />}
                   </button>
                   <button
                     type="button"
@@ -172,11 +176,20 @@ export const MeliGuideWidget: React.FC = () => {
                 </div>
               </div>
 
-              {/* Message Body with Explicit Character Avatar Container */}
-              <div className="flex items-start gap-3 pt-1">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-canvas/80 border border-border/80 p-1 flex items-center justify-center shrink-0 shadow-sm">
-                  <MeliSprite state={spriteState} size="md" className="w-full h-full" />
-                </div>
+              {/* Character Avatar & Dialogue Layout */}
+              <div className="flex items-center gap-3 pt-1">
+                <motion.div
+                  animate={prefersReducedMotion ? {} : { y: [0, -3, 0] }}
+                  transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+                  className="shrink-0 flex items-center justify-center"
+                >
+                  <MeliSprite
+                    state={spriteState}
+                    size="avatar"
+                    className="w-16 sm:w-20 h-24 sm:h-28"
+                  />
+                </motion.div>
+
                 <div className="flex-1 min-w-0">
                   <p className="font-body text-xs sm:text-sm text-content-primary leading-relaxed">
                     "{currentGuidance.message}"
@@ -186,7 +199,7 @@ export const MeliGuideWidget: React.FC = () => {
                   {currentGuidance.actionText && currentGuidance.targetSection && (
                     <a
                       href={`#${currentGuidance.targetSection}`}
-                      className="inline-flex items-center gap-1 font-mono text-[10px] sm:text-[11px] font-semibold text-semantic-cyan hover:underline mt-1.5"
+                      className="inline-flex items-center gap-1 font-mono text-[10px] sm:text-[11px] font-semibold text-semantic-cyan hover:underline mt-2"
                     >
                       {currentGuidance.actionText} <ArrowRight className="w-3 h-3" />
                     </a>
@@ -197,7 +210,7 @@ export const MeliGuideWidget: React.FC = () => {
           )}
 
           {/* 3. Minimized Dock Toggle Pill */}
-          {!isFirstVisitPrompt && (!guideExpanded || !guideEnabled || guideMuted) && (
+          {!isFirstVisitPrompt && (!guideExpanded || !guideEnabled) && (
             <motion.button
               key="meli-dock-toggle"
               type="button"

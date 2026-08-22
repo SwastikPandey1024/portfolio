@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 export interface MeliSpriteProps {
   state?: MeliSpriteState;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'avatar' | 'hero';
   className?: string;
   altText?: string;
 }
@@ -14,11 +14,13 @@ const SIZE_MAP = {
   sm: 'w-10 h-10',
   md: 'w-14 h-14',
   lg: 'w-20 h-20',
+  avatar: 'w-16 sm:w-20 h-24 sm:h-28',
+  hero: 'w-24 sm:w-28 h-36 sm:h-40',
 };
 
 export const MeliSprite: React.FC<MeliSpriteProps> = ({
   state = 'idle',
-  size = 'md',
+  size = 'avatar',
   className,
   altText = `Meli AI Companion (${state} state)`,
 }) => {
@@ -59,12 +61,12 @@ export const MeliSprite: React.FC<MeliSpriteProps> = ({
         <img
           src={currentSrc}
           alt={altText}
-          width={128}
-          height={128}
+          width={160}
+          height={240}
           loading="eager"
           decoding="sync"
           onError={handleError}
-          className="w-full h-full max-w-full max-h-full object-contain filter drop-shadow-md select-none pointer-events-none"
+          className="w-full h-full max-w-full max-h-full object-contain filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)] select-none pointer-events-none transition-transform duration-300 hover:scale-105"
         />
       </picture>
     </div>
