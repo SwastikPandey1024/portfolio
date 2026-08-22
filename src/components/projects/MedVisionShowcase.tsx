@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Github, Eye, Activity, ShieldAlert, FileSearch, LineChart, Layers } from 'lucide-react';
+import { ArrowUpRight, Github, Eye, Activity, ShieldAlert, FileSearch, LineChart, Layers, ShieldCheck } from 'lucide-react';
 import type { FlagshipProject } from '@/types/project';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
@@ -53,7 +53,7 @@ export const MedVisionShowcase: React.FC<MedVisionShowcaseProps> = ({ project })
         </div>
       </div>
 
-      {/* Mandatory Academic / Research Disclaimer Badge */}
+      {/* Mandatory Academic / Research Disclaimer Banner */}
       <div className="my-6 p-3.5 rounded-lg bg-surface-raised/80 border border-indigo-500/30 flex items-start gap-3">
         <ShieldAlert className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
         <div className="text-xs font-body text-content-muted">
@@ -64,10 +64,10 @@ export const MedVisionShowcase: React.FC<MedVisionShowcaseProps> = ({ project })
         </div>
       </div>
 
-      {/* Main Research Case Study Stage */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center my-8">
-        {/* Left Column: Thesis, Methodology, Leakage Prevention, CTAs */}
-        <div className="lg:col-span-6 flex flex-col items-start">
+      {/* Split Case Study Stage: Left Information + Right Interactive Evidence Viewport */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start my-8">
+        {/* Left Column: Thesis, Methodology, Leakage Prevention, Metrics, CTAs */}
+        <div className="lg:col-span-5 flex flex-col items-start">
           <span className="font-mono text-xs uppercase tracking-wider text-indigo-400 font-semibold mb-2">
             THE THESIS: "{project.conceptualCore}"
           </span>
@@ -123,42 +123,10 @@ export const MedVisionShowcase: React.FC<MedVisionShowcaseProps> = ({ project })
           </div>
         </div>
 
-        {/* Right Column: Research Dashboard Overview */}
-        <div className="lg:col-span-6">
-          <div className="rounded-xl overflow-hidden border border-border/80 bg-surface shadow-surface-elevated group relative">
-            <picture>
-              <source srcSet={project.primaryAsset.path} type="image/webp" />
-              <img
-                src={project.primaryAsset.path.replace('.webp', '.png')}
-                alt={project.primaryAsset.alt}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-auto object-cover transform transition-transform duration-500 group-hover:scale-[1.01]"
-              />
-            </picture>
-            <div className="p-3 bg-surface-raised/90 border-t border-border flex items-center justify-between text-xs font-mono text-content-muted">
-              <span>Streamlit Research & Evaluation Console</span>
-              <span className="text-indigo-400 font-semibold">26,684 Patients</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Architecture Pipeline Flow Component */}
-      <div className="pt-6 border-t border-border/60">
-        <span className="font-mono text-xs text-content-subtle font-semibold uppercase tracking-wider block mb-2">
-          RIGOROUS RESEARCH & EVALUATION PIPELINE
-        </span>
-        <SystemPipelineDiagram steps={project.pipelineSteps} colorTheme="indigo" />
-      </div>
-
-      {/* Lower Evidence Stage: Grad-CAM vs Prediction vs ROC Curve */}
-      <div className="mt-8 pt-6 border-t border-border/60">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <span className="font-mono text-xs text-content-subtle font-semibold uppercase tracking-wider">
-            RESEARCH EVIDENCE COMPARISONS
-          </span>
-          <div className="flex flex-wrap gap-2" role="tablist" aria-label="MedVision Research Evidence Views">
+        {/* Right Column: Tabbed Evidence Viewport (Matching DocuChat Pattern) */}
+        <div className="lg:col-span-7 flex flex-col">
+          {/* Evidence View Tabs */}
+          <div className="flex flex-wrap gap-1.5 mb-4" role="tablist" aria-label="MedVision Research Evidence Views">
             {researchTabs.map((tab) => {
               const Icon = tab.icon;
               const isSelected = activeResearchTab === tab.id;
@@ -171,7 +139,7 @@ export const MedVisionShowcase: React.FC<MedVisionShowcaseProps> = ({ project })
                   className={cn(
                     'flex items-center gap-1.5 font-mono text-xs px-3 py-1.5 rounded-md border transition-all cursor-pointer',
                     isSelected
-                      ? 'bg-semantic-indigo/20 text-indigo-300 border-indigo-500/50 font-semibold'
+                      ? 'bg-semantic-indigo/20 text-indigo-300 border-indigo-500/50 font-semibold shadow-sm'
                       : 'bg-surface text-content-muted border-border hover:border-content-muted'
                   )}
                 >
@@ -181,37 +149,43 @@ export const MedVisionShowcase: React.FC<MedVisionShowcaseProps> = ({ project })
               );
             })}
           </div>
-        </div>
 
-        {/* Dynamic Research Evidence Display */}
-        {currentResearchAsset && (
+          {/* Single Interactive Evidence Viewport */}
           <motion.div
             key={activeResearchTab}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="rounded-xl overflow-hidden border border-border/80 bg-surface"
+            initial={{ opacity: 0, scale: 0.99 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.25 }}
+            className="rounded-xl overflow-hidden border border-border/80 bg-surface shadow-surface-elevated"
           >
-            <picture>
-              <source srcSet={currentResearchAsset.path} type="image/webp" />
-              <img
-                src={currentResearchAsset.path.replace('.webp', '.png')}
-                alt={currentResearchAsset.alt}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-auto object-cover max-h-[580px]"
-              />
-            </picture>
-            {currentResearchAsset.caption && (
-              <div className="p-3.5 bg-surface-raised/90 border-t border-border font-mono text-xs text-content-muted flex items-center justify-between">
-                <span>{currentResearchAsset.caption}</span>
-                <span className="text-indigo-400 font-semibold uppercase text-[10px] tracking-wider">
-                  Academic Evidence
-                </span>
-              </div>
+            {currentResearchAsset && (
+              <picture>
+                <source srcSet={currentResearchAsset.path} type="image/webp" />
+                <img
+                  src={currentResearchAsset.path.replace('.webp', '.png')}
+                  alt={currentResearchAsset.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-auto object-cover max-h-[560px]"
+                />
+              </picture>
             )}
+            <div className="p-3 bg-surface-raised/90 border-t border-border flex items-center justify-between text-xs font-mono text-content-muted">
+              <span>{currentResearchAsset?.caption || currentResearchAsset?.alt}</span>
+              <span className="text-indigo-400 font-semibold text-[10px] tracking-wider uppercase flex items-center gap-1">
+                <ShieldCheck className="w-3.5 h-3.5" /> Academic Evidence
+              </span>
+            </div>
           </motion.div>
-        )}
+        </div>
+      </div>
+
+      {/* Architecture Pipeline Flow Component */}
+      <div className="pt-6 border-t border-border/60">
+        <span className="font-mono text-xs text-content-subtle font-semibold uppercase tracking-wider block mb-2">
+          RIGOROUS RESEARCH & EVALUATION PIPELINE
+        </span>
+        <SystemPipelineDiagram steps={project.pipelineSteps} colorTheme="indigo" />
       </div>
     </article>
   );
