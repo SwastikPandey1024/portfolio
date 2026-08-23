@@ -29,7 +29,7 @@ describe('Phase 3 Flagship Projects Showcase', () => {
     renderSelectedSystems();
     expect(screen.getByText(/THE THESIS: "AI can predict."/i)).toBeInTheDocument();
     expect(screen.getByText(/THE THESIS: "AI can retrieve and reason."/i)).toBeInTheDocument();
-    expect(screen.getByText(/THE THESIS: "AI can remember and act."/i)).toBeInTheDocument();
+    expect(screen.getByText(/THE THESIS: "AI can remember, reason, and act."/i)).toBeInTheDocument();
     expect(screen.getByText(/THE THESIS: "AI can interpret visual data."/i)).toBeInTheDocument();
   });
 
@@ -49,15 +49,15 @@ describe('Phase 3 Flagship Projects Showcase', () => {
     ).toBeInTheDocument();
   });
 
-  it('allows switching Meli character states interactively', () => {
+  it('allows switching Meli character states interactively across the 16-state engine', () => {
     renderSelectedSystems();
     const thinkingTab = screen.getByRole('tab', { name: /^thinking$/i });
     expect(thinkingTab).toBeInTheDocument();
 
     fireEvent.click(thinkingTab);
-    expect(screen.getByText('Thinking / Reasoning')).toBeInTheDocument();
+    expect(screen.getByText(/04\. Thinking \(LLM Reasoning\)/i)).toBeInTheDocument();
     expect(
-      screen.getByText(/Activated during LLM inference, memory lookups, and context retrieval synthesis/i)
+      screen.getByText(/Deep dual-brain reasoning stream active across GPT-OSS 120B reasoning core/i)
     ).toBeInTheDocument();
   });
 
